@@ -1,0 +1,37 @@
+<page-not-authorized>
+  <h1>Not Authorized</h1>
+
+  <script>
+    var self = this
+    var appConfig = riot.mixin('appConfig')
+    var eventBus = riot.mixin('eventBus')
+    var logger = riot.mixin('logger')
+    var pager = riot.mixin('pager')
+    var router = riot.mixin('router')
+    var auth = riot.mixin('auth')
+
+    self.on("before-mount", function() {
+      logger.trace("page-not-authorized: before-mount")
+    })
+
+    self.on("mount", function() {
+      logger.trace("page-not-authorized: mount")
+    })
+
+    self.on("before-unmount", function() {
+      logger.trace("page-not-authorized: before-unmount")
+    })
+
+    self.on("unmount", function() {
+      logger.trace("page-not-authorized: unmount")
+    })
+
+    self.on("update", function() {
+      logger.trace("page-not-authorized: update")
+    })
+
+    self.on("updated", function() {
+      logger.trace("page-not-authorized: updated")
+    })
+  </script>
+</page-not-authorized>

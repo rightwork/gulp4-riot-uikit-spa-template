@@ -1,0 +1,48 @@
+<page-home>
+  <h1>Home</h1>
+  <a onclick={{leftnav}}>left nav layout</a>
+  <a onclick={{full}}>full layout</a>
+  <input type=text></input>
+  <script>
+    var self = this
+    var appConfig = riot.mixin('appConfig')
+    var eventBus = riot.mixin('eventBus')
+    var logger = riot.mixin('logger')
+    var pager = riot.mixin('pager')
+    var router = riot.mixin('router')
+    var auth = riot.mixin('auth')
+    var layouts = riot.mixin('layouts')
+
+    leftnav(e) {
+      layouts.showLayout('layout-leftnav')
+    }
+
+    full(e) {
+      layouts.showLayout('layout-full')
+    }
+
+    self.on("before-mount", function() {
+      logger.trace("page-home: before-mount")
+    })
+
+    self.on("mount", function() {
+      logger.trace("page-home: mount")
+    })
+
+    self.on("before-unmount", function() {
+      logger.trace("page-home: before-unmount")
+    })
+
+    self.on("unmount", function() {
+      logger.trace("page-home: unmount")
+    })
+
+    self.on("update", function() {
+      logger.trace("page-home: update")
+    })
+
+    self.on("updated", function() {
+      logger.trace("page-home: updated")
+    })
+  </script>
+</page-home>

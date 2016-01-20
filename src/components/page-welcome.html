@@ -1,0 +1,45 @@
+//
+// 1. Copy
+// 2. Replace page-not-authorized with name of page
+// 3. Tweak
+// 4. Remove this comment block
+//
+<page-welcome>
+  <h1>Welcome</h1>
+
+  <script>
+    var self = this
+    var appConfig = riot.mixin('appConfig')
+    var eventBus = riot.mixin('eventBus')
+    var logger = riot.mixin('logger')
+    var pager = riot.mixin('pager')
+    var router = riot.mixin('router')
+    var auth = riot.mixin('auth')
+    var layouts = riot.mixin('layouts')
+
+    self.on("before-mount", function() {
+      logger.trace("page-welcome: before-mount")
+      pager.authenticateAndAuthorizeForTag(self)
+    })
+
+    self.on("mount", function() {
+      logger.trace("page-welcome: mount")
+    })
+
+    self.on("before-unmount", function() {
+      logger.trace("page-welcome: before-unmount")
+    })
+
+    self.on("unmount", function() {
+      logger.trace("page-welcome: unmount")
+    })
+
+    self.on("update", function() {
+      logger.trace("page-welcome: update")
+    })
+
+    self.on("updated", function() {
+      logger.trace("page-welcome: updated")
+    })
+  </script>
+</page-welcome>

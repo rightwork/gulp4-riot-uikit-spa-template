@@ -1,0 +1,27 @@
+<page-login>
+  <!-- using attributes fails, even a="b".  why? same code works on index.html
+  <login data-args='{ "username" : "johnny",
+                      "password" : "rocket",
+                      "remember" : true }'>
+  </login-->
+  <login></login>
+
+  <script>
+    var self = this
+
+    var eventBus = riot.mixin('eventBus')
+    var logger = riot.mixin('logger')
+    var pager = riot.mixin('pager')
+    var router = riot.mixin('router')
+    var layouts = riot.mixin('layouts')
+
+    self.on("before-mount", function() {
+      layouts.showLayout('layout-leftnav')
+    })
+
+    eventBus.onBroadcast(self, 'auth.registered', function() {
+      pager.redirectToPostLoginPage()
+      self.message = ""
+    })
+  </script>
+</page-login>

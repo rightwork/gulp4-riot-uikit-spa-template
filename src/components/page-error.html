@@ -1,0 +1,45 @@
+<page-error>
+  <h1>Error</h1>
+  <ul>
+    <li>{{errNumber}}</li>
+    <li>{{errMessage}}</li>
+  </ul>
+
+  <script>
+    var self = this
+    var appConfig = riot.mixin('appConfig')
+    var eventBus = riot.mixin('eventBus')
+    var logger = riot.mixin('logger')
+    var pager = riot.mixin('pager')
+    var router = riot.mixin('router')
+    var auth = riot.mixin('auth')
+
+    var q = router.query()
+    self.errNumber = q.number
+    self.errMessage = q.message
+
+    self.on("before-mount", function() {
+      logger.trace("page-error: before-mount")
+    })
+
+    self.on("mount", function() {
+      logger.trace("page-error: mount")
+    })
+
+    self.on("before-unmount", function() {
+      logger.trace("page-error: before-unmount")
+    })
+
+    self.on("unmount", function() {
+      logger.trace("page-error: unmount")
+    })
+
+    self.on("update", function() {
+      logger.trace("page-error: update")
+    })
+
+    self.on("updated", function() {
+      logger.trace("page-error: updated")
+    })
+  </script>
+</page-error>

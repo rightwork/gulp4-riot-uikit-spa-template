@@ -1,0 +1,17 @@
+<left-nav>
+  <div>
+    <a href = {{ url('page-welcome one:1, two:2') }} >Welcome</a>
+  </div>
+
+  <script>
+    var self = this
+
+    var eventBus = riot.mixin('eventBus')
+    var logger = riot.mixin('logger')
+    var pager = riot.mixin('pager')
+    var router = riot.mixin('router')
+
+    self.url = router.urlFor
+  </script>
+
+</left-nav>
