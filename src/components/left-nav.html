@@ -1,7 +1,18 @@
 <left-nav>
-  <div>
-    <a href = {{ url('page-welcome one:1, two:2') }} >Welcome</a>
-  </div>
+  <ul class="uk-nav uk-active">
+    <li>
+      <a href={{ url( 'page-home') }}>Home</a>
+    </li>
+    <li>
+      <a href={{ url( 'page-welcome one:1, two:2') }}>Welcome</a>
+    </li>
+    <li>
+      <a href={{ url( 'page-login') }}>Login</a>
+    </li>
+    <li>
+      <a href={{ url( 'non-existant-page') }}>Non-existant page</a>
+    </li>
+  </ul>
 
   <script>
     var self = this

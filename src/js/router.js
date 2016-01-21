@@ -26,7 +26,7 @@ function Router(logger, eventBus, basePath) {
 
   self.urlFor = function(pageName, query) {
     if (!query) {
-      var array = pageName.trim().match(/^(\S+)\s(.*)/)
+      var array = pageName.trim().match(/^(\S+)\s*(.*)/)
       pageName = array[1]
       queryStr = array[2]
       if (queryStr) {
@@ -34,7 +34,10 @@ function Router(logger, eventBus, basePath) {
         query = RiotUtils.jobjParse(queryStr)
       }
     }
-    // TODO: maybe validate pageName here on avail tags?
+
+    if(!RiotUtils.tagExists(pageName)){
+      logger.warn("Page " + pageName + " does not exist.")
+    }
     return self.base() + pageName + self.toQueryStr(query)
   }
 

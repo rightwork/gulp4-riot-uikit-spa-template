@@ -1,8 +1,17 @@
 <page-home>
   <h1>Home</h1>
-  <a onclick={{leftnav}}>left nav layout</a>
-  <a onclick={{full}}>full layout</a>
-  <input type=text></input>
+  <ul class="uk-list uk-list-striped">
+    <li>
+      <a onclick={{leftnav}}>left nav layout</a>
+    </li>
+    <li>
+      <a onclick={{full}}>full layout</a>
+    </li>
+  </ul>
+  <form class="uk-form">
+    <input type="text"></input>
+    <input class="uk-button" type="button" value="so so"></input>
+  </form>
   <script>
     var self = this
     var appConfig = riot.mixin('appConfig')

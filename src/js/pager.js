@@ -83,22 +83,8 @@ function Pager(appConfig, logger, eventBus, router, auth) {
       logger.error("Could not find <main> element to put page!")
     }
   }
-  /*
-  Much wasted time over this one.  riot.unmount removes the html element.
-  When trying to mount again, the html element doesn't exist so nothing is
-  rendered.  there is riot.unmount(true), which means to keep the parent
-  element, except that it still renders the parent element without rendering
-  the children element.  what is needed is an unmount that keeps the mount
-  point, so that it can be mounted again.  that is what this func does.
-    https://github.com/riot/riot/issues/576
-     and
-    https://github.com/riot/riot/issues/575
-  don't seem to help. TODO: remove this comment when ready
-  */
+
   self.unmount = function(tag) {
-    //var el = tag.root
-    //var clone = el.cloneNode(false)
-    //$(clone).insertAfter($(el))
     tag.unmount()
   }
 

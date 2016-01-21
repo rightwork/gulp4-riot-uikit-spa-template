@@ -159,12 +159,7 @@ gulp.task('index-html-includes', function() {
       ])), {
         transform: function(filepath) {
           if (filepath.slice(-5) === '.html') {
-            // little bit of magic here.  automatically add tags to page so
-            // that we can stay out of index.html as much as possible. down
-            // side is that tag is grabbed from filename.  UNCOMMENT if new
-            // layout manager approach doesn't work. TODO:
-            //var tagName = filepath.replace(/^.*[\\\/]/, '').slice(0, -5)
-            return '<script src="' + filepath + '" type="riot/tag" inline></script>' // + '<' + tagName + ">" + "</" + tagName + ">";
+            return '<script src="' + filepath + '" type="riot/tag" inline></script>'
           } else if (filepath.slice(-3) === '.js') {
             return '<script src="' + filepath + '" inline></script>';
           }
@@ -185,12 +180,6 @@ gulp.task('index-html-includes', function() {
       inline({
         rootpath: targetName,
         compress: false
-          /* TODO: doesn't quite work to inline riot tags.  see how inline should work here:
-			    https://github.com/muut/riotjs-admin/blob/master/index.html
-			   handlers: function (source, context, next) {
-					if (source.type == 'riot/tag') source.content = source.fileContent;
-					next();
-			 }*/
       })))
     //        .pipe(gulpif(yargs.production, gzip()))
     .pipe(gulp.dest(target))

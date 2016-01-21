@@ -37,7 +37,7 @@ function Auth(logger, eventBus){
       if(!data && !$.isEmptyObject(self.loginData)){
         return success()
       }
-      else if(data.username == 'a') {
+      else if(data.username == 'admin') {
         return success()
       }
       else {

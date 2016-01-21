@@ -28,7 +28,7 @@ function Layouts(appConfig, logger, eventBus) {
     }
 
     var alreadyShowing = false
-    var existingMain = []
+    var existingMainChildren = []
 
     // unmount layouts, while preserving main element
     var layouts = $(".layout").each(function(index, layout) {
@@ -36,7 +36,7 @@ function Layouts(appConfig, logger, eventBus) {
         if (name == layout.nodeName.toLowerCase()) {
           alreadyShowing = true
         } else {
-          existingMain = self.unmountLayout(RiotUtils.elToTag(layout))
+          existingMainChildren = self.unmountLayout(RiotUtils.elToTag(layout))
         }
       }
     })
@@ -45,31 +45,32 @@ function Layouts(appConfig, logger, eventBus) {
     // the above block extracted no main elements, and thus that needs to be
     // done here.
     if (!layouts.length) {
-      existingMain = $("main").detach()
+      existingMainChildren = $("main").children().detach()
+      $("main").remove()
     }
 
     if (!alreadyShowing) {
-      self.mountLayout(name, existingMain)
+      self.mountLayout(name, existingMainChildren)
     }
 
     eventBus.broadcast(self, "layout-updated")
   }
 
   /**
-   * Mount new layout and insert existingMain element
+   * Mount new layout and insert existingMainChildren element
    * @param  {string} name         name of layout
-   * @param  {element} existingMain main element detached from DOM
+   * @param  {element} existingMainChildren main element detached from DOM
    * @return {null}
    */
-  this.mountLayout = function(name, existingMain) {
+  this.mountLayout = function(name, existingMainChildren) {
     var bodyEl = $("body")
     if (bodyEl.length) {
       bodyEl.prepend("<" + name + " class='layout'>" + "</" + name + ">")
       riot.mount(name)
-      if (existingMain.length) {
+      if (existingMainChildren.length) {
         var mainEl = $("main")
         if (mainEl.length) {
-          mainEl.replaceWith(existingMain)
+          mainEl.prepend(existingMainChildren)
         } else {
           logger.error("Could not find <main> element to put page in layout " + name + "!")
         }
@@ -88,9 +89,9 @@ function Layouts(appConfig, logger, eventBus) {
  * @return {element}           detached main tag
  */
   this.unmountLayout = function(layoutTag) {
-    var existingMain = $("main").detach()
+    var existingMainChildren = $("main").children().detach()
     layoutTag.unmount()
-    return existingMain
+    return existingMainChildren
   }
 
 }

@@ -1,6 +1,6 @@
 // TODO:
-// * don't reference page-welcome or page-login explicitely, except for appconfig
-// * add to github
+// * removing main is messed up
+// * atom beautify messes up {{ }}.  pick something else?
 // * look for TODO's
 function App(Auth, Router, AppConfig, EventBus, Logger, Pager, Layouts) {
   // the default { } conflicts with json syntax when passing objects in html5 attributes
