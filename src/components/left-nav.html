@@ -12,8 +12,9 @@
     <li>
       <a href={{ url( 'non-existant-page') }}>Non-existant page</a>
     </li>
-  </ul>
 
+  </ul>
+  <locale></locale>
   <script>
     var self = this
 
@@ -21,8 +22,10 @@
     var logger = riot.mixin('logger')
     var pager = riot.mixin('pager')
     var router = riot.mixin('router')
+    var _ = riot.mixin('globalizer')
 
     self.url = router.urlFor
+
   </script>
 
 </left-nav>

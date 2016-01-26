@@ -1,0 +1,39 @@
+<locale>
+    <select class="uk-form-select" name="locale" onchange={{updateLocale}}>
+      <option each={{localesKeysValues}} value="{{key}}">{{value}}</option>
+    </select>
+
+  <script>
+    var self = this
+
+    var eventBus = riot.mixin('eventBus')
+    var logger = riot.mixin('logger')
+    var pager = riot.mixin('pager')
+    var router = riot.mixin('router')
+    var globalizer = riot.mixin('globalizer')
+    var appConfig = riot.mixin('appConfig')
+    self.locales = appConfig.locales
+    self.localesKeysValues = Object.keys(self.locales).map(function(key){
+      obj = {}
+      obj.key = key
+      obj.value = self.locales[key]
+      return obj
+    })
+    .sort(function(a, b){
+      if (a.value < b.value)
+        return -1;
+      else if (a.value > b.value)
+        return 1;
+      else
+        return 0;
+    })
+
+
+    self.url = router.urlFor
+
+    updateLocale(e){
+      globalizer.load(this.locale.value)
+    }
+  </script>
+
+</locale>

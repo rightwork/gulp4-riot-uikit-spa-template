@@ -16,6 +16,7 @@
     var router = riot.mixin('router')
     var auth = riot.mixin('auth')
     var layouts = riot.mixin('layouts')
+    var _ = riot.mixin('globalizer')
 
     self.on("before-mount", function() {
       logger.trace("page-welcome: before-mount")

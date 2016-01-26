@@ -9,7 +9,7 @@
     </li>
   </ul>
   <form class="uk-form">
-    <input type="text"></input>
+    <input name="amount" type="text" value="100.00"></input>
     <input class="uk-button" type="button" value="so so"></input>
   </form>
   <script>
@@ -21,6 +21,7 @@
     var router = riot.mixin('router')
     var auth = riot.mixin('auth')
     var layouts = riot.mixin('layouts')
+    var _ = riot.mixin('globalizer')
 
     leftnav(e) {
       layouts.showLayout('layout-leftnav')
@@ -47,6 +48,8 @@
     })
 
     self.on("update", function() {
+      this.amount.value = _.number(105.934834934)
+      this.amount.value = _.eur(105.934834934)
       logger.trace("page-home: update")
     })
 

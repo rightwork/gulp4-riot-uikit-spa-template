@@ -1,4 +1,4 @@
-function Pager(appConfig, logger, eventBus, router, auth) {
+function Pager(appConfig, logger, eventBus, router, auth, _) {
   var self = this
 
   eventBus.onBroadcast(self, 'route-updated', function(pageName) {

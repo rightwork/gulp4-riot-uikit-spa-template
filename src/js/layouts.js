@@ -6,7 +6,7 @@
  * @param {Logger} logger    [description]
  * @param {EventBus} eventBus  [description]
  */
-function Layouts(appConfig, logger, eventBus) {
+function Layouts(appConfig, logger, eventBus, _) {
   var self = this
 
   /**

@@ -1,4 +1,4 @@
-var Logger = function(logLevel){
+var Logger = function(logLevel, _){
   this.logger = logGlobalDontUseDirectly
   if(logLevel){
     this.logger.setLevel(logLevel)

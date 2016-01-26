@@ -6,5 +6,6 @@ var app = new App(
   EventBus,
   Logger,
   Pager,
-  Layouts
+  Layouts,
+  Globalizer
 )

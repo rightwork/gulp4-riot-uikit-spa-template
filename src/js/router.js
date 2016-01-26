@@ -1,4 +1,4 @@
-function Router(logger, eventBus, basePath) {
+function Router(basePath, logger, eventBus, _) {
   var self = riot.observable(this)
 
   self.base = function(path) {

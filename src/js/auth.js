@@ -1,4 +1,4 @@
-function Auth(logger, eventBus){
+function Auth(logger, eventBus, _){
   var self = riot.observable(this)
 
   self.loginData = {}

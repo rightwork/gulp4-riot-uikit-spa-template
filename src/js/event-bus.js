@@ -1,4 +1,4 @@
-function EventBus(logger){
+function EventBus(logger, _){
   var self = riot.observable(this)
   self.eventBus = riot.observable()
 

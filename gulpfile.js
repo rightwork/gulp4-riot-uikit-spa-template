@@ -1,15 +1,20 @@
 var
+  cldrDownloader = require('cldr-data-downloader'),
+  cldr = require('cldr-data'),
   concat = require('gulp-concat'),
   connect = require('gulp-connect'),
   cssnano = require('gulp-cssnano'),
   debug = require('gulp-debug'),
   del = require('del'),
+  fs = require('fs'),
   es = require('event-stream'),
+  globalizeCompiler = require('globalize-compiler'),
   gulpif = require('gulp-if'),
   gzip = require('gulp-gzip'),
   inject = require('gulp-inject'),
   inline = require('gulp-inline-source'),
   install = require('gulp-install'),
+  mkdirp = require('mkdirp'),
   newer = require('gulp-newer'),
   order = require('gulp-order'),
   scss = require('gulp-sass'),
@@ -54,13 +59,62 @@ gulp.task('copy-components', function() {
     .pipe(gulp.dest(target + 'components/'));
 });
 
+gulp.task('globalize-compile', function(callback) {
+  var extracts = [src + 'js/globalizer.js'].map(function(input) {
+    return globalizeCompiler.extract(input);
+  });
+
+  var messagesObj = JSON.parse(fs.readFileSync(src + 'config/messages.json', 'utf8'));
+
+  var targetPath = target + 'js/'
+  mkdirp(targetPath)
+
+  // TODO: this works, but takes a long time, and is probably too excessive for
+  // 99.99% of the cases.  Instead, locales are hardcoded in here.
+  //var locales = cldr.availableLocales;
+  var locales = ['en', 'es', 'de']
+  for (var i = 0; i < locales.length; i++) {
+    var locale = locales[i];
+    if (!messagesObj.hasOwnProperty(locale)) {
+      // fallback on en
+      messagesObj[locale] = messagesObj.en
+    }
+    try {
+      var bundle = globalizeCompiler.compileExtracts({
+        defaultLocale: locale,
+        messages: messagesObj,
+        extracts: extracts
+      });
+      fs.writeFileSync(targetPath + 'formatters-' + locale + '.js', bundle);
+    } catch (err) {
+
+    }
+  }
+  callback();
+})
+
 gulp.task('vendor-js', function() {
   return gulp.src([
       './node_modules/jquery/dist/jquery.js',
       './node_modules/uikit/dist/js/uikit.js',
       './node_modules/riot/riot+compiler.js',
-      './node_modules/loglevel/dist/loglevel.js'
+      './node_modules/loglevel/dist/loglevel.js',
+
+      // from https://github.com/jquery/globalize/blob/master/examples/globalize-compiler/production.html
+      "./node_modules/globalize/dist/globalize-runtime.js",
+      'node_modules/globalize/dist/globalize-runtime/message.js',
+      'node_modules/globalize/dist/globalize-runtime/number.js',
+      'node_modules/globalize/dist/globalize-runtime/plural.js',
+      'node_modules/globalize/dist/globalize-runtime/date.js', // load after number.js
+      'node_modules/globalize/dist/globalize-runtime/currency.js', // load after number.js
+      'node_modules/globalize/dist/globalize-runtime/relative-time.js', // load after number.js and plural.js
+
+      // require.js for loading pre-compiled globalize data
+      //'node_modules/requirejs/require.js'
     ])
+    .pipe(debug({
+      "title": "vendor-js"
+    }))
     .pipe(sourcemaps.init())
     .pipe(gulpif(yargs.production, uglify()))
     // concat order wrt uglify seems to matter
@@ -108,7 +162,7 @@ gulp.task('app-js', function() {
       src + 'js/**/main.js' // bootstrap
     ])
     .pipe(debug({
-      "title": "js"
+      "title": "app-js"
     }))
     .pipe(sourcemaps.init())
     .pipe(gulpif(yargs.production, uglify()))
@@ -144,7 +198,11 @@ gulp.task("app-css", function() {
 gulp.task('index-html-includes', function() {
   return gulp.src(src + 'index.html')
     .pipe(inject(
-      gulp.src([target + 'js/**/*.js',
+      gulp.src([
+        //target + 'js/**/formatters-es.js',
+        //target + 'js/**/formatters-en.js',
+        //target + 'js/**/formatters-de.js',
+        target + 'js/**/!(formatters)*.js',
         target + 'components/**/*.html',
         target + 'css/**/*.css'
       ], {
@@ -153,6 +211,7 @@ gulp.task('index-html-includes', function() {
       //		.pipe(debug({"title":"target css and js and html files. /" + targetName + '/js/vendors.js'}))
       .pipe(order([
         '**/vendors.js',
+        //'**/formatters*.js',
         '**/app.js',
         '**/vendors.css',
         '**/app.css'
@@ -187,7 +246,7 @@ gulp.task('index-html-includes', function() {
 
 gulp.task('build', gulp.series(
   //'clean',
-  gulp.parallel('copy-components', 'app-css', 'app-js', 'vendor-css', 'vendor-js'),
+  gulp.parallel('copy-components', 'app-css', 'globalize-compile', 'app-js', 'vendor-css', 'vendor-js'),
   'index-html-includes'
 ))
 
