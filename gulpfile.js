@@ -70,9 +70,10 @@ gulp.task('globalize-compile', function(callback) {
   mkdirp(targetPath)
 
   // TODO: this works, but takes a long time, and is probably too excessive for
-  // 99.99% of the cases.  Instead, locales are hardcoded in here.
+  // 99.99% of the cases.  Instead, locales are read from config/common.js
   //var locales = cldr.availableLocales;
-  var locales = ['en', 'es', 'de']
+  eval(fs.readFileSync(src + 'config/common.js') + '')
+  var locales = Object.keys((new CommonConfig()).locales)
   for (var i = 0; i < locales.length; i++) {
     var locale = locales[i];
     if (!messagesObj.hasOwnProperty(locale)) {
@@ -145,6 +146,7 @@ gulp.task('vendor-css', function() {
 });
 
 gulp.task('app-js', function() {
+  var userConfigSource = src + 'config/user.js'
   var commonConfigSource = src + 'config/common.js'
   var targetConfigSource = src + 'config/dev.js'
   if (yargs.production) {
@@ -154,6 +156,7 @@ gulp.task('app-js', function() {
   // gave arbitrary results.
   return gulp.src([
       src + 'js/**/patchLogLevelName.js', //patches to vendors
+      userConfigSource, // user config settings
       commonConfigSource, // common settings
       targetConfigSource, // target specific settings
       src + 'js/**/mixins.js',

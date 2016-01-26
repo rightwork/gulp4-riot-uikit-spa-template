@@ -44,11 +44,16 @@ function Pager(appConfig, logger, eventBus, router, auth, _) {
     router.redirect(appConfig.loginPage + router.encodeReturnUrl())
   }
 
+  self.reloadPage = function(){
+    self.showPage(self._pageName)
+  }
+
   /*
    riot.js supplement to unmount a tag and mount a new one.
   */
   this.showPage = function(name, options) {
     logger.trace('pager.showPage: ' + name)
+    self._pageName = name
 
     // IMPROVE: find a way to check that tag is also a page
     if(!RiotUtils.tagExists(name)){

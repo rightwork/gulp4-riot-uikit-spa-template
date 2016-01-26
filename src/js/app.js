@@ -1,26 +1,27 @@
 // TODO:
-// * Create userConfig in addition to appConfig
 // * select the current locale in select box
-// * have gulpfile.js use common.js locale config
+// * implement messages.json in another language or two
 // * cleanup package.json (cldr-data full, downloader, etc...)
 // * any cldr atom packages?  messages.json packages?
 // * atom beautify messes up {{ }}.  pick something else?
 // * look for TODO's
-function App(Auth, Router, AppConfig, EventBus, Logger, Pager, Layouts, Globalizer) {
+function App(Auth, Router, AppConfig, UserConfig, EventBus, Logger, Pager, Layouts, Globalizer) {
   // the default { } conflicts with json syntax when passing objects in html5 attributes
   riot.util.brackets.set('{{ }}')
 
   var appConfig = new AppConfig()
+  var userConfig = new UserConfig()
   // TODO: read browser default locale here, and only fall back on locale if
-	// browser not specified?
+  // browser not specified?
   var globalizer = new Globalizer()
-  globalizer.one('globalize-complete', function(){
+  globalizer.one('globalize-complete', function() {
+
     var logger = new Logger(appConfig.logLevel, globalizer)
     var eventBus = new EventBus(logger, globalizer)
     var router = new Router("/", logger, eventBus, globalizer)
     var auth = new Auth(logger, eventBus, globalizer)
     var pager = new Pager(appConfig, logger, eventBus, router, auth, globalizer)
-    var layouts = new Layouts(appConfig, logger, eventBus, globalizer)
+    var layouts = new Layouts(appConfig, logger, eventBus, pager)
 
     riot.mixin('appConfig', appConfig)
     riot.mixin('logger', logger)
@@ -34,10 +35,10 @@ function App(Auth, Router, AppConfig, EventBus, Logger, Pager, Layouts, Globaliz
 
   })
 
-  globalizer.on('globalize-complete', function(){
-      riot.update();
+  globalizer.on('globalize-complete', function() {
+    riot.update();
   })
 
-  globalizer.load(appConfig.locale)
+  globalizer.load(userConfig.get('locale') || appConfig.locale)
 
 }

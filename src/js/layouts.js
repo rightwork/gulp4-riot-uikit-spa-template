@@ -6,7 +6,7 @@
  * @param {Logger} logger    [description]
  * @param {EventBus} eventBus  [description]
  */
-function Layouts(appConfig, logger, eventBus, _) {
+function Layouts(appConfig, logger, eventBus, pager) {
   var self = this
 
   /**
@@ -28,7 +28,6 @@ function Layouts(appConfig, logger, eventBus, _) {
     }
 
     var alreadyShowing = false
-    var existingMainChildren = []
 
     // unmount layouts, while preserving main element
     var layouts = $(".layout").each(function(index, layout) {
@@ -36,21 +35,17 @@ function Layouts(appConfig, logger, eventBus, _) {
         if (name == layout.nodeName.toLowerCase()) {
           alreadyShowing = true
         } else {
-          existingMainChildren = self.unmountLayout(RiotUtils.elToTag(layout))
+          self.unmountLayout(RiotUtils.elToTag(layout))
         }
       }
     })
 
-    // if no layout classes exist (i.e. there is just a <main> under body), then
-    // the above block extracted no main elements, and thus that needs to be
-    // done here.
     if (!layouts.length) {
-      existingMainChildren = $("main").children().detach()
       $("main").remove()
     }
 
     if (!alreadyShowing) {
-      self.mountLayout(name, existingMainChildren)
+      self.mountLayout(name)
     }
 
     eventBus.broadcast(self, "layout-updated")
@@ -62,21 +57,12 @@ function Layouts(appConfig, logger, eventBus, _) {
    * @param  {element} existingMainChildren main element detached from DOM
    * @return {null}
    */
-  this.mountLayout = function(name, existingMainChildren) {
+  this.mountLayout = function(name) {
     var bodyEl = $("body")
     if (bodyEl.length) {
       bodyEl.prepend("<" + name + " class='layout'>" + "</" + name + ">")
       riot.mount(name)
-      if (existingMainChildren.length) {
-        var mainEl = $("main")
-        if (mainEl.length) {
-          mainEl.prepend(existingMainChildren)
-        } else {
-          logger.error("Could not find <main> element to put page in layout " + name + "!")
-        }
-      } else {
-        logger.warn("Main element not replaced, may be out of order wrt layout.")
-      }
+      pager.reloadPage()
     } else {
       logger.error("Could not find <body> element to put layout " + name + "!")
     }
@@ -89,9 +75,7 @@ function Layouts(appConfig, logger, eventBus, _) {
  * @return {element}           detached main tag
  */
   this.unmountLayout = function(layoutTag) {
-    var existingMainChildren = $("main").children().detach()
     layoutTag.unmount()
-    return existingMainChildren
   }
 
 }

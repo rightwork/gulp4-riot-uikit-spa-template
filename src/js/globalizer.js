@@ -1,11 +1,11 @@
 function Globalizer(){
 	var self = riot.observable(this)
-
 	self.load = function(locale){
 		$.getScript('js/formatters-' + locale + '.js')
 			.done(function(script, textStatus){
 				console.log(textStatus)
 				Globalize.locale( locale );
+				self.locale = locale
 
 				// Use Globalize to format dates.
 				self.date = Globalize.dateFormatter({
