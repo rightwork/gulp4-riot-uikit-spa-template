@@ -60,11 +60,35 @@ gulp.task('copy-components', function() {
 });
 
 gulp.task('globalize-compile', function(callback) {
-  var extracts = [src + 'js/globalizer.js'].map(function(input) {
+  var messagesObj = JSON.parse(fs.readFileSync(src + 'config/messages.json', 'utf8'));
+
+  // TODO: globalize-compiler won't include a message if it's not explicitly
+  // referenced in a .js via a specific format (i.e. Globalize.messageFormatter)
+  // it's much preferred to use a shorthand notation to pull messages from
+  // messages.json, say _.m('like').  In order to do that, we have to mock up
+  // a file that references all messages in the messages.json so that they will
+  // be included in the compiled output.
+  // START HACK:
+  var buffer = []
+  var messageLocales = Object.keys(messagesObj)
+  var stringKeys = []
+  messageLocales.map(function(key) {
+    messageKeysForLocale = Object.keys(messagesObj[key])
+    Array.prototype.push.apply(stringKeys, messageKeysForLocale)
+  })
+  stringKeys = stringKeys.sort().filter(function(item, pos, ary) {
+    return !pos || item != ary[pos - 1];
+  })
+  stringKeys.map(function(key){
+    buffer.push('Globalize.messageFormatter("' + key + '")')
+  })
+  buffer = buffer.join('\n')
+  console.log(buffer)
+  // END HACK:
+
+  var extracts = [src + 'js/globalizer.js', buffer].map(function(input) {
     return globalizeCompiler.extract(input);
   });
-
-  var messagesObj = JSON.parse(fs.readFileSync(src + 'config/messages.json', 'utf8'));
 
   var targetPath = target + 'js/'
   mkdirp(targetPath)
@@ -72,25 +96,39 @@ gulp.task('globalize-compile', function(callback) {
   // TODO: this works, but takes a long time, and is probably too excessive for
   // 99.99% of the cases.  Instead, locales are read from config/common.js
   //var locales = cldr.availableLocales;
+  /*CommonConfig =*/
   eval(fs.readFileSync(src + 'config/common.js') + '')
   var locales = Object.keys((new CommonConfig()).locales)
+
+  // loop through locales and compile them into formatter js files
   for (var i = 0; i < locales.length; i++) {
     var locale = locales[i];
+    // if locale is specified in prefs, but not in messages, then fallback on en
+    // so that we can at least get the cldr data for that locale, even though
+    // the messages will be in english
     if (!messagesObj.hasOwnProperty(locale)) {
-      // fallback on en
       messagesObj[locale] = messagesObj.en
     }
+
+    // some locales cause exceptions still, i.e. when using all locales, so
+    // ignore the ones that crap out
     try {
+
+      // compile using config/messages.json, current locale iterator, and all
+      // compiled extracts above
       var bundle = globalizeCompiler.compileExtracts({
         defaultLocale: locale,
         messages: messagesObj,
         extracts: extracts
       });
+
+      // write out to target path to include in deployment
       fs.writeFileSync(targetPath + 'formatters-' + locale + '.js', bundle);
     } catch (err) {
-
+      console.log(err)
     }
   }
+
   callback();
 })
 
@@ -202,9 +240,7 @@ gulp.task('index-html-includes', function() {
   return gulp.src(src + 'index.html')
     .pipe(inject(
       gulp.src([
-        //target + 'js/**/formatters-es.js',
-        //target + 'js/**/formatters-en.js',
-        //target + 'js/**/formatters-de.js',
+        // formatters are pulled dynamically by the app as needed
         target + 'js/**/!(formatters)*.js',
         target + 'components/**/*.html',
         target + 'css/**/*.css'
@@ -214,7 +250,6 @@ gulp.task('index-html-includes', function() {
       //		.pipe(debug({"title":"target css and js and html files. /" + targetName + '/js/vendors.js'}))
       .pipe(order([
         '**/vendors.js',
-        //'**/formatters*.js',
         '**/app.js',
         '**/vendors.css',
         '**/app.css'

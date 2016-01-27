@@ -50,6 +50,9 @@
     self.on("update", function() {
       this.amount.value = _.number(105.934834934)
       this.amount.value = _.eur(105.934834934)
+      this.amount.value = _.m('test')
+      //this.amount.value = _.like(3)
+      //this.amount.value = _.m('like')(3)
       logger.trace("page-home: update")
     })
 

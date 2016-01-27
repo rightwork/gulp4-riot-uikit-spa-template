@@ -1,5 +1,15 @@
 function Globalizer(){
 	var self = riot.observable(this)
+	self.m = function(path, args){
+		var g = Globalize
+		if(!args){
+			return g.messageFormatter(path)()
+		}
+		else{
+			// TODO: need to slice out path here
+			return g.messageFormatter(path).apply(arguments)
+		}
+	}
 	self.load = function(locale){
 		$.getScript('js/formatters-' + locale + '.js')
 			.done(function(script, textStatus){
@@ -22,8 +32,8 @@ function Globalizer(){
 				// Use Globalize to get the plural form of a numeric value.
 				self.plural = Globalize.pluralGenerator ( );
 
-				// Use Globalize to format a message with plural inflection.
-				self.like = Globalize.messageFormatter( "like" );
+				// message formatters are automatically injected via a HACK: in the
+				// gulpfile script.
 
 				// Use Globalize to format a relative time.
 				self.relTime = Globalize.relativeTimeFormatter("second")//( -35, "second" );

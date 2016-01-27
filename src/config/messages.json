@@ -1,4 +1,8 @@
 {
+	"root": {
+		"_comment" : "gulpfile will add in locales by default, using english as fallback.  If not relying on gulpfile, a locale needs to be explicitely specified (i.e. 'pt : ') for it to be a valid locale and inherit from the root keys",
+		"test": "test in english"
+	},
 	"en": {
 		"like": [
 			"{0, plural, offset:1",
@@ -27,6 +31,7 @@
 			"    one {You and someone else liked this}",
 			"  other {You and # others liked this}",
 			"}"
-		]
+		],
+		"test": "test in german"
 	}
 }

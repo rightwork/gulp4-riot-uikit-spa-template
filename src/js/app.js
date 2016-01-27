@@ -1,7 +1,5 @@
 // TODO:
-// * select the current locale in select box
 // * implement messages.json in another language or two
-// * cleanup package.json (cldr-data full, downloader, etc...)
 // * any cldr atom packages?  messages.json packages?
 // * atom beautify messes up {{ }}.  pick something else?
 // * look for TODO's
