@@ -1,9 +1,11 @@
 {
 	"root": {
 		"_comment" : "gulpfile will add in locales by default, using english as fallback.  If not relying on gulpfile, a locale needs to be explicitely specified (i.e. 'pt : ') for it to be a valid locale and inherit from the root keys",
-		"test": "test in english"
-	},
-	"en": {
+		"_comment2" : "this can be finicky.  if gulpfile has errors, then check json format, such as extraneous commas, etc...  If live reloading, may also need to shut down, clean, rebuild, and run",
+		"Home" : "Home",
+		"Welcome" : "Welcome",
+		"Login" : "Login",
+		"Go" : "Go",
 		"like": [
 			"{0, plural, offset:1",
 			"     =0 {Be the first to like this}",
@@ -13,25 +15,30 @@
 			"}"
 		]
 	},
+	"en": {},
 	"es": {
+		"Home" : "Casa",
+		"Welcome" : "Bienvenidos",
+		"Login" : "Entrar",
+		"Go" : "Vamos",
 		"like": [
 			"{0, plural, offset:1",
-			"     =0 {Be the first to like this}",
-			"     =1 {You liked this}",
-			"    one {You and someone else liked this}",
-			"  other {You and # others liked this}",
+			"     =0 {Ser el primero}",
+			"     =1 {Usted ha gustado este}",
+			"    one {Usted y otra persona han gustado este}",
+			"  other {Usted y # otras han gustado este}",
 			"}"
 		]
 	},
 	"de": {
+		"Welcome" : "Wilkomen",
 		"like": [
 			"{0, plural, offset:1",
 			"     =0 {Be the first to like this}",
 			"     =1 {You liked this}",
 			"    one {You and someone else liked this}",
-			"  other {You and # others liked this}",
+			"  other {You and # dunkens liked this}",
 			"}"
-		],
-		"test": "test in german"
+		]
 	}
 }

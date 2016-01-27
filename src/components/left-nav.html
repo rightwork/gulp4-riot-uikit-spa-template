@@ -1,13 +1,13 @@
 <left-nav>
   <ul class="uk-nav uk-active">
     <li>
-      <a href={{ url( 'page-home') }}>Home</a>
+      <a href={{ url( 'page-home') }}>{{_('Home')}}</a>
     </li>
     <li>
-      <a href={{ url( 'page-welcome one:1, two:2') }}>Welcome</a>
+      <a href={{ url( 'page-welcome one:1, two:2') }}>{{_('Welcome')}}</a>
     </li>
     <li>
-      <a href={{ url( 'page-login') }}>Login</a>
+      <a href={{ url( 'page-login') }}>{{_('Login')}}</a>
     </li>
     <li>
       <a href={{ url( 'non-existant-page') }}>Non-existant page</a>
@@ -22,7 +22,7 @@
     var logger = riot.mixin('logger')
     var pager = riot.mixin('pager')
     var router = riot.mixin('router')
-    var _ = riot.mixin('globalizer')
+    var _ = self._ = riot.mixin('globalizer').underbar()
 
     self.url = router.urlFor
 

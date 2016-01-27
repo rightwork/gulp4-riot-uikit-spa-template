@@ -1,5 +1,5 @@
 <page-home>
-  <h1>Home</h1>
+  <h1>{{_('Home')}}</h1>
   <ul class="uk-list uk-list-striped">
     <li>
       <a onclick={{leftnav}}>left nav layout</a>
@@ -10,7 +10,7 @@
   </ul>
   <form class="uk-form">
     <input name="amount" type="text" value="100.00"></input>
-    <input class="uk-button" type="button" value="so so"></input>
+    <input class="uk-button" type="button" value={{_('Go')}}></input>
   </form>
   <script>
     var self = this
@@ -21,7 +21,7 @@
     var router = riot.mixin('router')
     var auth = riot.mixin('auth')
     var layouts = riot.mixin('layouts')
-    var _ = riot.mixin('globalizer')
+    var _ = self._ = riot.mixin('globalizer').underbar()
 
     leftnav(e) {
       layouts.showLayout('layout-leftnav')
@@ -50,7 +50,7 @@
     self.on("update", function() {
       this.amount.value = _.number(105.934834934)
       this.amount.value = _.eur(105.934834934)
-      this.amount.value = _.m('test')
+      this.amount.value = _('like', 3)
       //this.amount.value = _.like(3)
       //this.amount.value = _.m('like')(3)
       logger.trace("page-home: update")

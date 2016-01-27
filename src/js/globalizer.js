@@ -1,14 +1,19 @@
 function Globalizer(){
 	var self = riot.observable(this)
 	self.m = function(path, args){
+		var slicedArgs = Array.prototype.slice.call(arguments, 1);
 		var g = Globalize
-		if(!args){
-			return g.messageFormatter(path)()
-		}
-		else{
-			// TODO: need to slice out path here
-			return g.messageFormatter(path).apply(arguments)
-		}
+		return g.messageFormatter(path)(slicedArgs)
+	}
+	self.underbar = function(){
+		self.m.date = self.date
+		self.m.number = self.number
+		self.m.usd = self.usd
+		self.m.eur = self.eur
+		self.m.plural = self.plural
+		self.m.relTime = self.relTime
+		
+		return self.m
 	}
 	self.load = function(locale){
 		$.getScript('js/formatters-' + locale + '.js')
