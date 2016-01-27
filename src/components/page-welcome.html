@@ -5,7 +5,7 @@
 // 4. Remove this comment block
 //
 <page-welcome>
-  <h1>Welcome</h1>
+  <h1>.._('Welcome')..</h1>
 
   <script>
     var self = this
@@ -16,7 +16,7 @@
     var router = riot.mixin('router')
     var auth = riot.mixin('auth')
     var layouts = riot.mixin('layouts')
-    var _ = riot.mixin('globalizer')
+    var _ = self._ = riot.mixin('globalizer').underbar()
 
     self.on("before-mount", function() {
       logger.trace("page-welcome: before-mount")

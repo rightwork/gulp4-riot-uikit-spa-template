@@ -12,7 +12,7 @@ function Globalizer(){
 		self.m.eur = self.eur
 		self.m.plural = self.plural
 		self.m.relTime = self.relTime
-		
+
 		return self.m
 	}
 	self.load = function(locale){
@@ -43,6 +43,7 @@ function Globalizer(){
 				// Use Globalize to format a relative time.
 				self.relTime = Globalize.relativeTimeFormatter("second")//( -35, "second" );
 
+				self.underbar()
 				self.trigger('globalize-complete')
 			})
 			.fail(function(jqxhr, settings, exception){

@@ -1,7 +1,4 @@
 // TODO:
-// * implement messages.json in another language or two
-// * any cldr atom packages?  messages.json packages?
-// * atom beautify messes up .. ...  pick something else?
 // * look for TODO's
 function App(Auth, Router, AppConfig, UserConfig, EventBus, Logger, Pager, Layouts, Globalizer) {
   // the default { } conflicts with json syntax when passing objects in html5 attributes

@@ -1,0 +1,50 @@
+<page-globalize-example>
+  <h1>Globalize examples</h1>
+  <div><b>A date:</b> .._.date(new Date())..</div>
+  <div><b>A number:</b> ..globalizer.number(127.0834838418)..</div>
+  <div><b>A plural number:</b> .._.plural(127.0834838418)..</div>
+  <div><b>USD:</b> .._.usd(127.0834838418)..</div>
+  <div><b>EUR:</b> .._.eur(127.0834838418)..</div>
+  <div><b>A message plural w/0:</b> .._('like', 0)..</div>
+  <div><b>A message plural w/1:</b> .._('like', 1)..</div>
+  <div><b>A message plural w/2:</b> .._('like', 2)..</div>
+  <div><b>A message plural w/37:</b> .._('like', 37)..</div>
+  <div><b>Relative time:</b> .._.relTime(838)..</div>
+
+  <script>
+    var self = this
+    var appConfig = riot.mixin('appConfig')
+    var eventBus = riot.mixin('eventBus')
+    var logger = riot.mixin('logger')
+    var pager = riot.mixin('pager')
+    var router = riot.mixin('router')
+    var auth = riot.mixin('auth')
+    var layouts = riot.mixin('layouts')
+    self.globalizer = riot.mixin('globalizer')
+    var _ = self._ = riot.mixin('globalizer').underbar()
+
+    self.on("before-mount", function() {
+      logger.trace("page-globalize-example: before-mount")
+    })
+
+    self.on("mount", function() {
+      logger.trace("page-globalize-example: mount")
+    })
+
+    self.on("before-unmount", function() {
+      logger.trace("page-globalize-example: before-unmount")
+    })
+
+    self.on("unmount", function() {
+      logger.trace("page-globalize-example: unmount")
+    })
+
+    self.on("update", function() {
+      logger.trace("page-globalize-example: update")
+    })
+
+    self.on("updated", function() {
+      logger.trace("page-globalize-example: updated")
+    })
+  </script>
+</page-globalize-example>
